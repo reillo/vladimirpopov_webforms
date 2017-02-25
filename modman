@@ -25,7 +25,6 @@ js/webforms/logic.js                                          js/webforms/logic.
 js/webforms/multistep.js                                      js/webforms/multistep.js                                     
 js/webforms/opentip                                           js/webforms/opentip                                          
 js/webforms/stars.js                                          js/webforms/stars.js                                         
-js/webforms/upload                                            js/webforms/upload                                           
 lib/Webforms                                                  lib/Webforms                                                 
 skin/adminhtml/default/default/webforms/bullet-replied.png    skin/adminhtml/default/default/webforms/bullet-replied.png   
 skin/adminhtml/default/default/webforms/message.css           skin/adminhtml/default/default/webforms/message.css          
