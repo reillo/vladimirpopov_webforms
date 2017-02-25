@@ -13,21 +13,21 @@ class VladimirPopov_WebForms_Block_Adminhtml_Webforms_Edit
 
 		// add store switcher
 		if (!Mage::app()->isSingleStoreMode() && $this->getRequest()->getParam('id')) {
-			
+
 			$store_switcher = $this->getLayout()->createBlock('adminhtml/store_switcher','store_switcher');
 			$store_switcher->setDefaultStoreName($this->__('Default Values'));
 
 			$this->getLayout()->getBlock("left")->append(
 				$store_switcher
-			);			
+			);
 		}
-		
+
 		// add scripts
 		$js = $this->getLayout()->createBlock('core/template','webforms_js',array(
 			'template' => 'webforms/js.phtml',
 			'tabs_block' => 'webforms_tabs'
 		));
-		
+
 		$this->getLayout()->getBlock('content')->append(
 			$js
 		);
@@ -105,12 +105,12 @@ class VladimirPopov_WebForms_Block_Adminhtml_Webforms_Edit
 			'active_tab' => '{{tab_id}}'
 		));
 	}
-	
-	public function getDuplicateUrl() { return $this->getUrl('*/adminhtml_webforms/duplicate', array ('id' => Mage::registry('webforms_data')->getId())); }
 
-	public function getAddFieldUrl() { return $this->getUrl('*/adminhtml_fields/edit', array ('webform_id' => Mage::registry('webforms_data')->getId())); }
+	public function getDuplicateUrl() { return $this->getUrl('adminhtml/webforms/duplicate', array ('id' => Mage::registry('webforms_data')->getId())); }
 
-	public function getAddFieldsetUrl() { return $this->getUrl('*/adminhtml_fieldsets/edit', array ('webform_id' => Mage::registry('webforms_data')->getId())); }
+	public function getAddFieldUrl() { return $this->getUrl('adminhtml/fields/edit', array ('webform_id' => Mage::registry('webforms_data')->getId())); }
+
+	public function getAddFieldsetUrl() { return $this->getUrl('adminhtml/fieldsets/edit', array ('webform_id' => Mage::registry('webforms_data')->getId())); }
 
 	public function getHeaderText()
 	{

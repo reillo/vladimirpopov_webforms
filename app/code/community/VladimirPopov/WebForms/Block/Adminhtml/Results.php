@@ -23,9 +23,9 @@ class VladimirPopov_WebForms_Block_Adminhtml_Results extends Mage_Adminhtml_Bloc
 			'class'     => 'edit',
 		));
 	}
-	
+
 	public function getEditUrl(){
-		return $this->getUrl('*/adminhtml_webforms/edit',array('id'=>$this->getRequest()->getParam('webform_id')));
+		return $this->getUrl('adminhtml/webforms/edit',array('id'=>$this->getRequest()->getParam('webform_id')));
 	}
-}  
+}
 ?>

@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<VladimirPopov_WebForms>
-			<version>2.6.2</version>
+			<version>2.6.1</version>
 		</VladimirPopov_WebForms>
 	</modules>
 	<frontend>
@@ -41,13 +41,13 @@
 	</frontend>
 	<admin>
 		<routers>
-			<webforms_admin>
-				<use>admin</use>
+			<adminhtml>
 				<args>
-					<module>VladimirPopov_WebForms</module>
-					<frontName>webforms_admin</frontName>
+					<modules>
+						<VladimirPopov_WebForms before="Mage_Adminhtml">VladimirPopov_WebForms_Adminhtml</VladimirPopov_WebForms>
+					</modules>
 				</args>
-			</webforms_admin>
+			</adminhtml>
 		</routers>
 	</admin>
 	<adminhtml>
@@ -68,13 +68,15 @@
 					<forms module="webforms">
 						<title>Manage Forms</title>
 						<sort_order>0</sort_order>
-						<action>webforms_admin/adminhtml_webforms</action>
+						<action>adminhtml/webforms</action>
 					</forms>
+
 					<quickresponses module="webforms">
 						<title>Manage Quick Responses</title>
 						<sort_order>1</sort_order>
-						<action>webforms_admin/adminhtml_quickresponse</action>
+						<action>adminhtml/quickresponse</action>
 					</quickresponses>
+					
 				</children>
 			</webforms>
 		</menu>
@@ -101,7 +103,7 @@
 								<hidden>
 									<title>Manage Hidden Fields</title>
 								</hidden>
-							</children>							
+							</children>
 						</webforms>
 						<system>
 							<children>
@@ -241,7 +243,7 @@
 						<class>VladimirPopov_WebForms_Model_Observer</class>
 						<method>adjustConfig</method>
 					</webforms_adminhtml_controller_action_predispatch_start>
-				</observers>				
+				</observers>
 			</adminhtml_controller_action_predispatch_start>
 		</events>
 	</global>

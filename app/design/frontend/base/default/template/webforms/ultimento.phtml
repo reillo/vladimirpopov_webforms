@@ -29,8 +29,8 @@ if ($this->getWebform()->getIsActive() == VladimirPopov_WebForms_Model_Webforms:
 
     if (Mage::registry('show_form_name')) {
         ?>
-        <div class="page-head">
-            <h3><?php echo $this->getWebform()->getName(); ?></h3>
+        <div class="page-title">
+            <h2><?php echo $this->getWebform()->getName(); ?></h2>
         </div>
     <?php } ?>
 
@@ -102,11 +102,11 @@ if ($this->getWebform()->getIsActive() == VladimirPopov_WebForms_Model_Webforms:
                     ?>
 
                     <fieldset id="fieldset_<?php echo $fieldset_id ?>"
-                              class="group-select wide fieldset-<?php echo $fieldset_id ?>"
+                              class="group-select fieldset-<?php echo $fieldset_id ?>"
                         <?php if ($fieldset['logic_visibility'] == VladimirPopov_WebForms_Model_Logic::VISIBILITY_HIDDEN) echo 'style="display:none"'; ?>>
 
                         <?php if ($fieldset['name']) { ?>
-                            <h2 class="legend"><?php echo $fieldset['name'] ?></h2>
+                            <h3><?php echo $fieldset['name'] ?></h3>
                         <?php } ?>
 
                         <ul class="form-list">
@@ -131,20 +131,15 @@ if ($this->getWebform()->getIsActive() == VladimirPopov_WebForms_Model_Webforms:
                                 <?php if ($j % 2 == 0 || $field->getSize() == 'wide' || $prev->getSize() == 'wide') {
                                     $j = 0; ?>
                                     <?php if ($k > 1) { ?></li><?php } ?>
-                                    <li <?php if ($size_class == 'wide') { ?>id="field_<?php echo $field->getId() ?>_row" <?php } ?>
-                                    class="<?php if ($size_class == 'wide') { ?>webforms-fields-row-<?php echo $field->getId() ?><?php } ?>"
-                                    <?php if ($size_class == 'wide' && $field->getData('logic_visibility') == VladimirPopov_WebForms_Model_Logic::VISIBILITY_HIDDEN) echo 'style="display:none"'; ?>>
+                                    <li <?php if($size_class == 'wide') {?>id="field_<?php echo $field->getId()?>_row" <?php }?>
+                                        class="<?php if ($size_class == 'wide') { ?>webforms-fields-row-<?php echo $field->getId() ?><?php } ?>"
+                                        <?php if ($size_class == 'wide' && $field->getData('logic_visibility') == VladimirPopov_WebForms_Model_Logic::VISIBILITY_HIDDEN) echo 'style="display:none"'; ?>>
                                 <?php } ?>
                                 <?php if ($size_class != "wide") { ?>
                                 <div id="field_<?php echo $field->getId() ?>"
                                      class="<?php echo $field_class ?> webforms-fields-<?php echo $field->getId() ?><?php if ($field->getCode()) { ?> webforms-fields-<?php echo $field->getCode();
                                      }?>"
                                     <?php if ($field->getData('logic_visibility') == VladimirPopov_WebForms_Model_Logic::VISIBILITY_HIDDEN) echo 'style="display:none"'; ?>>
-                            <?php } ?>
-
-
-                                <?php if ($size_class != "wide") { ?>
-                                <div class="input-box">
                             <?php } ?>
 
                                 <?php if ($field->getType() != 'html' && $field->getType() != 'subscribe') { ?>
@@ -172,6 +167,10 @@ if ($this->getWebform()->getIsActive() == VladimirPopov_WebForms_Model_Webforms:
 
                                 <br/>
 
+                                <?php if ($size_class != "wide") { ?>
+                                <div class="input-box">
+                            <?php } ?>
+
                                 <?php echo $field->toHtml(); ?>
 
                                 <?php if ($field->getComment()) { ?>
@@ -179,13 +178,11 @@ if ($this->getWebform()->getIsActive() == VladimirPopov_WebForms_Model_Webforms:
                                         <?php echo nl2br($field->getComment()) ?>
                                     </p>
                                 <?php } ?>
-
                                 <?php if ($field->getValidationAdvice()){?>
                                     <div style="display:none" class="validation-advice" id="advice-required-entry-field<?php echo $field->getId()?>">
                                         <?php echo $field->getValidationAdvice()?>
                                     </div>
                                 <?php }?>
-
                                 <?php if ($size_class != "wide") { ?>
                                 </div>
                             <?php } ?>
@@ -233,10 +230,11 @@ if ($this->getWebform()->getIsActive() == VladimirPopov_WebForms_Model_Webforms:
                     )->toHtml();
                 }?>
 
-                <div class="button-set">
-                    <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+                <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+
+                <div class="buttons-set">
                     <button type="button" id="webform_<?php echo $this->getWebform()->getId() ?>_submit_button"
-                            onclick="webform_<?php echo $this->getWebform()->getId() ?>_submit()" class="form-button"
+                            onclick="webform_<?php echo $this->getWebform()->getId() ?>_submit()" class="button"
                             title="<?php echo $this->__('submit') ?>">
                         <span><?php echo $this->__($this->getWebform()->getSubmitButtonText()) ?></span>
                     </button>

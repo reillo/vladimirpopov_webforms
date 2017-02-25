@@ -78,7 +78,7 @@ class VladimirPopov_WebForms_Adminhtml_LogicController
             $this->renderLayout();
         } else {
             Mage::getSingleton('adminhtml/session')->addError(Mage::helper('webforms')->__('Web-form does not exist'));
-            $this->_redirect('*/adminhtml_webforms/index');
+            $this->_redirect('adminhtml/webforms/index');
         }
     }
 
@@ -110,12 +110,12 @@ class VladimirPopov_WebForms_Adminhtml_LogicController
                 Mage::getSingleton('adminhtml/session')->setWebFormsData(false);
 
                 if ($saveandcontinue) {
-                    $this->_redirect('*/adminhtml_logic/edit', array('id' => $logic->getId(), 'webform_id' => $this->getRequest()->getParam('webform_id'), 'store' => $store));
+                    $this->_redirect('adminhtml/logic/edit', array('id' => $logic->getId(), 'webform_id' => $this->getRequest()->getParam('webform_id'), 'store' => $store));
                 } else {
                     if ($this->getRequest()->getParam('webform_id')) {
-                        $this->_redirect('*/adminhtml_webforms/edit', array('id' => $this->getRequest()->getParam('webform_id'), 'tab' => 'logic', 'store' => $store));
+                        $this->_redirect('adminhtml/webforms/edit', array('id' => $this->getRequest()->getParam('webform_id'), 'tab' => 'logic', 'store' => $store));
                     } else
-                        $this->_redirect('*/adminhtml_fields/edit', array('id' => $field_id, 'tab' => 'logic', 'store' => $store));
+                        $this->_redirect('adminhtml/fields/edit', array('id' => $field_id, 'tab' => 'logic', 'store' => $store));
                 }
                 return;
             } catch (Exception $e) {
@@ -127,7 +127,7 @@ class VladimirPopov_WebForms_Adminhtml_LogicController
 
         }
         Mage::getSingleton('adminhtml/session')->addError(Mage::helper('webforms')->__('Unexpected error'));
-        $this->_redirect('*/adminhtml_webforms/index');
+        $this->_redirect('adminhtml/webforms/index');
     }
 
     public function deleteAction()
@@ -140,9 +140,9 @@ class VladimirPopov_WebForms_Adminhtml_LogicController
                 $logic->delete();
                 Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Logic was successfully deleted'));
                 if ($this->getRequest()->getParam('webform_id')) {
-                    $this->_redirect('*/adminhtml_webforms/edit', array('id' => $this->getRequest()->getParam('webform_id'), 'tab' => 'logic'));
+                    $this->_redirect('adminhtml/webforms/edit', array('id' => $this->getRequest()->getParam('webform_id'), 'tab' => 'logic'));
                 } else
-                    $this->_redirect('*/adminhtml_fields/edit', array('id' => $field_id, 'tab' => 'logic'));
+                    $this->_redirect('adminhtml/fields/edit', array('id' => $field_id, 'tab' => 'logic'));
                 return;
             } catch (Exception $e) {
                 Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
@@ -151,7 +151,7 @@ class VladimirPopov_WebForms_Adminhtml_LogicController
             }
         }
         Mage::getSingleton('adminhtml/session')->addError(Mage::helper('webforms')->__('Unexpected error'));
-        $this->_redirect('*/adminhtml_webforms/index');
+        $this->_redirect('adminhtml/webforms/index');
     }
 
     public function massDeleteAction()
@@ -178,10 +178,10 @@ class VladimirPopov_WebForms_Adminhtml_LogicController
             $this->_getSession()->addException($e, $this->__('An error occurred while updating records.'));
         }
         if ($this->getRequest()->getParam('webform_id')) {
-            $this->_redirect('webforms_admin/adminhtml_webforms/edit', array('id' => $this->getRequest()->getParam('webform_id'), 'tab' => 'logic', 'store' => $store));
+            $this->_redirect('adminhtml/webforms/edit', array('id' => $this->getRequest()->getParam('webform_id'), 'tab' => 'logic', 'store' => $store));
             return;
         }
-        $this->_redirect('webforms_admin/adminhtml_fields/edit', array('id' => $this->getRequest()->getParam('field_id'), 'tab' => 'logic', 'store' => $store));
+        $this->_redirect('adminhtml/fields/edit', array('id' => $this->getRequest()->getParam('field_id'), 'tab' => 'logic', 'store' => $store));
     }
 
     public function massStatusAction()
@@ -216,9 +216,9 @@ class VladimirPopov_WebForms_Adminhtml_LogicController
             $this->_getSession()->addException($e, $this->__('An error occurred while updating records.'));
         }
         if ($this->getRequest()->getParam('webform_id')) {
-            $this->_redirect('webforms_admin/adminhtml_webforms/edit', array('id' => $this->getRequest()->getParam('webform_id'), 'tab' => 'logic', 'store' => $store));
+            $this->_redirect('adminhtml/webforms/edit', array('id' => $this->getRequest()->getParam('webform_id'), 'tab' => 'logic', 'store' => $store));
             return;
         }
-        $this->_redirect('webforms_admin/adminhtml_fields/edit', array('id' => $this->getRequest()->getParam('field_id'), 'tab' => 'logic', 'store' => $store));
+        $this->_redirect('adminhtml/fields/edit', array('id' => $this->getRequest()->getParam('field_id'), 'tab' => 'logic', 'store' => $store));
     }
 }

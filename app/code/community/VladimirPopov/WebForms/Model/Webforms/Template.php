@@ -15,6 +15,7 @@ class VladimirPopov_WebForms_Model_Webforms_Template
             array('value' => 'webforms/multistep.phtml', 'label' => Mage::helper('webforms')->__('Multistep (display fieldsets as steps)')),
             array('value' => 'webforms/sidebar.phtml', 'label' => Mage::helper('webforms')->__('Sidebar (compact sidebar block)')),
             array('value' => 'webforms/legacy.phtml', 'label' => Mage::helper('webforms')->__('Legacy (Magento 1.3 and earlier)')),
+            array('value' => 'webforms/ultimento.phtml', 'label' => Mage::helper('webforms')->__('Ultimento (theme matching template)')),
             array('value' => 'webforms/acumen.phtml', 'label' => Mage::helper('webforms')->__('Acumen (theme matching template)')),
         );
     }

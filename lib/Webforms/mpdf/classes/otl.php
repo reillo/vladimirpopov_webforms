@@ -939,8 +939,8 @@ for($sch=0;$sch<=$subchunk;$sch++) {
 		}
 	}
 
-//print_r($this->OTLdata); echo '<br>';
-//print_r($this->assocMarks);  echo '<br>';
+//print_r($this->OTLdata); echo '<br />';
+//print_r($this->assocMarks);  echo '<br />';
 //print_r($this->assocLigs); exit;
 
 ////////////////////////////////////////////////////////////////
@@ -2853,7 +2853,7 @@ Final match
 		$x = ord($dict{$dictptr});
 		$c = $this->OTLdata[$ptr]['uni'] & 0xFF;
 		if ($x==_DICT_INTERMEDIATE_MATCH) {
-//echo "DICT_INTERMEDIATE_MATCH: ".dechex($c).'<br>';
+//echo "DICT_INTERMEDIATE_MATCH: ".dechex($c).'<br />';
 			// Do not match if next character in text is a Mark
 			if (isset($this->OTLdata[$ptr]['uni']) && strpos($this->GlyphClassMarks, $this->OTLdata[$ptr]['hex'])===false) { 
 				$matches[] = $ptr - 1;
@@ -2861,7 +2861,7 @@ Final match
 			$dictptr++;
 		}
 		else if ($x==_DICT_FINAL_MATCH) {
-//echo "DICT_FINAL_MATCH: ".dechex($c).'<br>';
+//echo "DICT_FINAL_MATCH: ".dechex($c).'<br />';
 			// Do not match if next character in text is a Mark
 			if (isset($this->OTLdata[$ptr]['uni']) && strpos($this->GlyphClassMarks, $this->OTLdata[$ptr]['hex'])===false) { 
 				$matches[] = $ptr - 1;
@@ -2869,7 +2869,7 @@ Final match
 			return $matches;
 		}
 		else if ($x==_DICT_NODE_TYPE_LINEAR) {
-//echo "DICT_NODE_TYPE_LINEAR: ".dechex($c).'<br>';
+//echo "DICT_NODE_TYPE_LINEAR: ".dechex($c).'<br />';
 			$dictptr++;
 			$m = ord($dict{$dictptr});
 			if ($c == $m) {
@@ -2888,12 +2888,12 @@ Final match
 				continue;
 			}
 			else {
-//echo "DICT_NODE_TYPE_LINEAR NOT: ".dechex($c).'<br>';
+//echo "DICT_NODE_TYPE_LINEAR NOT: ".dechex($c).'<br />';
 				return $matches;
 			}
 		}
 		else if ($x==_DICT_NODE_TYPE_SPLIT) {
-//echo "DICT_NODE_TYPE_SPLIT ON ".dechex($d).": ".dechex($c).'<br>';
+//echo "DICT_NODE_TYPE_SPLIT ON ".dechex($d).": ".dechex($c).'<br />';
 			$dictptr++;
 			$d = ord($dict{$dictptr});
 			if ($c < $d) {
@@ -2907,7 +2907,7 @@ Final match
 			}
 		}
 		else {
-//echo "PROBLEM: ".($x).'<br>';
+//echo "PROBLEM: ".($x).'<br />';
 			$ok = false;	// Something has gone wrong
 		}
 	}
@@ -5681,23 +5681,23 @@ function _getOTLLangTag($ietf, $available) {
 
 function _dumpproc($GPOSSUB, $lookupID, $subtable, $Type, $Format, $ptr, $currGlyph, $level) {
 	echo '<div style="padding-left: '.($level*2).'em;">';
-	echo $GPOSSUB .' LookupID #'.$lookupID.' Subtable#'.$subtable .' Type: '.$Type.' Format: '.$Format.'<br>';
+	echo $GPOSSUB .' LookupID #'.$lookupID.' Subtable#'.$subtable .' Type: '.$Type.' Format: '.$Format.'<br />';
 	echo '<div style="font-family:monospace">';
-	echo 'Glyph position: '.$ptr.' Current Glyph: '.$currGlyph.'<br>';
+	echo 'Glyph position: '.$ptr.' Current Glyph: '.$currGlyph.'<br />';
 
 	for ($i=0;$i<count($this->OTLdata);$i++) {
 		if ($i==$ptr) { echo '<b>'; }
 		echo $this->OTLdata[$i]['hex'] . ' ';
 		if ($i==$ptr) { echo '</b>'; }
 	}
-	echo '<br>';
+	echo '<br />';
 
 	for ($i=0;$i<count($this->OTLdata);$i++) {
 		if ($i==$ptr) { echo '<b>'; }
 		echo str_pad($this->OTLdata[$i]['uni'],5) . ' ';
 		if ($i==$ptr) { echo '</b>'; }
 	}
-	echo '<br>';
+	echo '<br />';
 
 	if ($GPOSSUB == 'GPOS') {
 		for ($i=0;$i<count($this->OTLdata);$i++) {

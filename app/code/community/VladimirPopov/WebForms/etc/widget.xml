@@ -33,6 +33,10 @@
 						<value>webforms/legacy.phtml</value>
 						<label>Legacy (Magento 1.3 and earlier)</label>
 					</legacy>
+					<ultimento translate="label">
+						<value>webforms/ultimento.phtml</value>
+						<label>Ultimento (theme matching template)</label>
+					</ultimento>
 					<acumen translate="label">
 						<value>webforms/acumen.phtml</value>
 						<label>Acumen (theme matching template)</label>

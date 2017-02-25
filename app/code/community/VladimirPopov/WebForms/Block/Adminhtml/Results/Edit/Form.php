@@ -1,5 +1,4 @@
 <?php
-
 class VladimirPopov_WebForms_Block_Adminhtml_Results_Edit_Form
     extends Mage_Adminhtml_Block_Widget_Form
 {
@@ -20,7 +19,7 @@ class VladimirPopov_WebForms_Block_Adminhtml_Results_Edit_Form
         $form = new Varien_Data_Form(array
         (
             'id' => 'edit_form',
-            'action' => $this->getUrl('*/*/save', array('_current' => true)),
+            'action' => $this->getUrl('*/*/save', array('_current'=>true)),
             'method' => 'post',
         ));
         $form->setFieldNameSuffix('result');
@@ -47,7 +46,7 @@ class VladimirPopov_WebForms_Block_Adminhtml_Results_Edit_Form
         $fieldset->addField('info_webform_name', 'link', array(
             'id' => 'info_webform_name',
             'style' => 'font-weight:bold',
-            'href' => $this->getUrl('*/adminhtml_webforms/edit', array('id' => $webform->getId())),
+            'href' => $this->getUrl('adminhtml/webforms/edit', array('id' => $webform->getId())),
             'label' => Mage::helper('webforms')->__('Web-form'),
         ));
 
@@ -260,7 +259,7 @@ class VladimirPopov_WebForms_Block_Adminhtml_Results_Edit_Form
             $store->getGroup()->getName(),
             $store->getName()
         );
-        return implode('<br>', $name);
+        return implode('<br/>', $name);
     }
 }
 

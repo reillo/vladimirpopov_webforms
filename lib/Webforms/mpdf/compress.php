@@ -60,7 +60,7 @@ function checkedAll (frm1) {
 <li>OTL (OpenType Layout) is required for RTL (right-to-left) scripts to work</li>
 </ul>
 </div>
-<input type="checkbox" name="checkall" onclick="checkedAll(frm1);"> <i>Select/Unselect All</i><br><br>
+<input type="checkbox" name="checkall" onclick="checkedAll(frm1);"> <i>Select/Unselect All</i><br /><br />
 
 <form id="frm1" action="compress.php" method="POST">
 ';
@@ -69,10 +69,10 @@ foreach($excl AS $k=>$ex) {
 	if ($k==0 || ($k > 1 && $k < 5)) {
 		echo ' checked="checked"';
 	}
-	echo ' /> '.$ex.'<br>';
+	echo ' /> '.$ex.'<br />';
 }
 
-echo '<br>
+echo '<br />
 <input type="submit" name="generate" value="generate" />
 </form>
 </body>

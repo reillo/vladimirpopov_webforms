@@ -31,7 +31,7 @@ class VladimirPopov_WebForms_Block_Adminhtml_Fields_Edit_Tab_Design
             'label' => Mage::helper('webforms')->__('Size'),
             'name' => 'size',
             'values' => Mage::getModel('webforms/fields')->getSizeTypes(),
-            'note' => Mage::helper('webforms')->__('Standard - two neighbour fields will be merged in one row<br>Wide - field will be wide and single in a row')
+            'note' => Mage::helper('webforms')->__('Standard - two neighbour fields will be merged in one row<br />Wide - field will be wide and single in a row')
         ));
 
         $fieldset->addField('css_class_container', 'text', array(

@@ -7,13 +7,13 @@
 class VladimirPopov_WebForms_Block_Adminhtml_Fieldsets_Edit
 	extends Mage_Adminhtml_Block_Widget_Form_Container
 {
-	
+
 	protected function _prepareLayout(){
 
 		parent::_prepareLayout();
 
 	}
-	
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -27,14 +27,14 @@ class VladimirPopov_WebForms_Block_Adminhtml_Fieldsets_Edit
 			'class'     => 'save',
 		), -100);
 	}
-	
+
 	public function getSaveUrl()
 	{
-		return $this->getUrl('*/adminhtml_webforms/save',array('webform_id'=>Mage::registry('webforms_data')->getId()));
+		return $this->getUrl('adminhtml/webforms/save',array('webform_id'=>Mage::registry('webforms_data')->getId()));
 	}
-	
+
 	public function getBackUrl(){
-		return $this->getUrl('*/adminhtml_webforms/edit',array('id'=>Mage::registry('webforms_data')->getId()));
+		return $this->getUrl('adminhtml/webforms/edit',array('id'=>Mage::registry('webforms_data')->getId()));
 	}
 
 	public function getHeaderText()
@@ -53,11 +53,11 @@ class VladimirPopov_WebForms_Block_Adminhtml_Fieldsets_Edit
 		if (!Mage::app()->isSingleStoreMode() && $this->getRequest()->getParam('id')) {
 			$store_switcher = $this->getLayout()->createBlock('adminhtml/store_switcher','store_switcher');
 			$store_switcher->setDefaultStoreName($this->__('Default Values'));
-			
+
 			$html = $store_switcher->toHtml().$html;
-			
+
 		}
 		return $html;
 	}
-}  
+}
 ?>

@@ -109,7 +109,7 @@ class VladimirPopov_WebForms_Model_Observer
 						<webform_' . $webform->getId() . ' module="webforms">
 							<title>' . htmlspecialchars($webform->getName()) . '</title>
 							<sort_order>' . ($i++ * 10) . '</sort_order>
-							<action>webforms_admin/adminhtml_results/index/webform_id/' . $webform->getId() . '/</action>
+							<action>adminhtml/results/index/webform_id/' . $webform->getId() . '/</action>
 						</webform_' . $webform->getId() . '>
 					';
                     $menuitem = simplexml_load_string($xml);

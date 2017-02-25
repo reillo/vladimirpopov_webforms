@@ -30,7 +30,7 @@ class VladimirPopov_WebForms_Model_Results
                 $field = Mage::getModel('webforms/fields')->load($field_id);
                 if ($field->getType() == 'select/checkbox' && !is_array($value)) $value = explode("\n", $value);
                 if ($field->getType() == 'select/contact' && $preserveFrontend) {
-                    $contact_array = $field->getContactArray($field->getValue('options'));
+                    $contact_array = $field->getContactArray($field->getValue());
                     for ($i = 0; $i < count($contact_array); $i++) {
 
                         if ($field->getContactValueById($i) == $value) {
@@ -143,7 +143,9 @@ class VladimirPopov_WebForms_Model_Results
             'store_name' => $store_name,
             'result' => $this->getTemplateResultVar(),
             'webform' => $webformObject,
-            'timestamp' => Mage::helper('core')->formatDate($this->getCreatedTime(), 'medium', true),
+            'name_sender' => $name,
+            'message' => Mage::app()->getRequest()->getPost('field')[10],
+            'name_sender' => Mage::app()->getRequest()->getPost('field')[1]
         );
 
         $customer = $this->getCustomer();
@@ -249,10 +251,10 @@ class VladimirPopov_WebForms_Model_Results
                 }
 
             //attach pdf version to email
-            if (($webform->getPrintAttachToEmail() && $recipient == 'admin') || ($webform->getCustomerPrintAttachToEmail() && $recipient == 'customer')) {
+            if ($webform->getPrintAttachToEmail() && $recipient == 'admin') {
                 require_once(Mage::getBaseDir('lib') . '/Webforms/mpdf/mpdf.php');
                 $mpdf = new mPDF('utf-8', 'A4');
-                $mpdf->WriteHTML($this->toPrintableHtml($recipient));
+                $mpdf->WriteHTML($this->toPrintableHtml());
 
                 $mail->getMail()->createAttachment(
                     $mpdf->Output('', 'S'),
@@ -312,7 +314,6 @@ class VladimirPopov_WebForms_Model_Results
             'store_name' => $store_name,
             'result' => $varResult,
             'webform' => $webformObject,
-            'timestamp' => Mage::helper('core')->formatDate($this->getCreatedTime(), 'medium', true),
         );
 
         $customer = $this->getCustomer();
@@ -325,17 +326,10 @@ class VladimirPopov_WebForms_Model_Results
 
         $storeId = $this->getStoreId();
         $templateId = 'webforms_result_approval';
-        $attachPDF = false;
-        $pdfTemplate = 'admin';
 
         if ($this->getApproved() == self::STATUS_APPROVED) {
             if ($webform->getData('email_result_approved_template_id')) {
                 $templateId = $webform->getData('email_result_approved_template_id');
-            }
-            //attach pdf version to email
-            if (($webform->getApprovedPrintAttachToEmail())) {
-                $attachPDF = true;
-                $pdfTemplate = 'approved';
             }
         } else if ($this->getApproved() == self::STATUS_NOTAPPROVED) {
             if ($webform->getData('email_result_notapproved_template_id')) {
@@ -345,44 +339,24 @@ class VladimirPopov_WebForms_Model_Results
             if ($webform->getData('email_result_completed_template_id')) {
                 $templateId = $webform->getData('email_result_completed_template_id');
             }
-            //attach pdf version to email
-            if (($webform->getCompletedPrintAttachToEmail())) {
-                $attachPDF = true;
-                $pdfTemplate = 'completed';
-            }
         } else
             return false;
 
         $mail = Mage::getModel('core/email_template')
             ->setReplyTo($this->getReplyTo('customer'));
 
-        if($attachPDF){
-            require_once(Mage::getBaseDir('lib') . '/Webforms/mpdf/mpdf.php');
-            $mpdf = new mPDF('utf-8', 'A4');
-            $mpdf->WriteHTML($this->toPrintableHtml($pdfTemplate));
-
-            $mail->getMail()->createAttachment(
-                $mpdf->Output('', 'S'),
-                Zend_Mime::TYPE_OCTETSTREAM,
-                Zend_Mime::DISPOSITION_ATTACHMENT,
-                Zend_Mime::ENCODING_BASE64,
-                'result' . Mage::getSingleton('core/date')->date('Y-m-d_H-i-s', $this->getCreatedTime()) . '.pdf'
-            );
-        }
-
         $mail->sendTransactional($templateId, $sender, $email, $name, $vars, $storeId);
 
     }
 
-    public function getStatusName()
-    {
+    public function getStatusName(){
         $statuses = $this->getApprovalStatuses();
-        foreach ($statuses as $status_id => $status_name) {
-            if ($this->getApproved() == $status_id) return $status_name;
+        foreach($statuses as $status_id => $status_name){
+            if($this->getApproved() == $status_id) return $status_name;
         }
     }
 
-    public function toPrintableHtml($type = 'admin')
+    public function toPrintableHtml()
     {
         $webform = Mage::getModel('webforms/webforms')
             ->setStoreId($this->getStoreId())
@@ -425,24 +399,8 @@ class VladimirPopov_WebForms_Model_Results
 
         $templateId = 'webforms_result_print';
         $template = Mage::getModel('core/email_template')->loadDefault($templateId);
-
-        if ($type == 'admin' && $webform->getPrintTemplateId()) {
+        if ($webform->getPrintTemplateId()) {
             $templateId = $webform->getPrintTemplateId();
-            $template->load($templateId);
-        }
-
-        if ($type == 'customer' && $webform->getCustomerPrintTemplateId()) {
-            $templateId = $webform->getCustomerPrintTemplateId();
-            $template->load($templateId);
-        }
-
-        if ($type == 'approved' && $webform->getApprovedPrintTemplateId()) {
-            $templateId = $webform->getApprovedPrintTemplateId();
-            $template->load($templateId);
-        }
-
-        if ($type == 'completed' && $webform->getCompletedPrintTemplateId()) {
-            $templateId = $webform->getCompletedPrintTemplateId();
             $template->load($templateId);
         }
 
@@ -601,10 +559,8 @@ class VladimirPopov_WebForms_Model_Results
                             $data_value = nl2br($value);
                             break;
                     }
-                    $value = new Varien_Object(array('html' => $data_value, 'value' => $this->getData('field_' . $field->getId())));
-                    Mage::dispatchEvent('webforms_results_tohtml_value', array('field' => $field, 'value' => $value, 'result' => $this));
                     $data = new Varien_Object(array(
-                        'value' => $value->getHtml(),
+                        'value' => $data_value,
                         'name' => $field->getName(),
                         'result_label' => $field->getResultLabel(),
                     ));
@@ -801,14 +757,14 @@ class VladimirPopov_WebForms_Model_Results
         $store_name = Mage::app()->getStore($this->getStoreId())->getName();
         if ($recipient == 'admin') {
             if ($store_group)
-                $html .= Mage::helper('webforms')->__('Store group') . ": " . $store_group . "<br>";
+                $html .= Mage::helper('webforms')->__('Store group') . ": " . $store_group . "<br />";
             if ($store_name)
-                $html .= Mage::helper('webforms')->__('Store name') . ": " . $store_name . "<br>";
-            $html .= Mage::helper('webforms')->__('Customer') . ": " . $this->getCustomerName() . "<br>";
-            $html .= Mage::helper('webforms')->__('IP') . ": " . $this->getIp() . "<br>";
+                $html .= Mage::helper('webforms')->__('Store name') . ": " . $store_name . "<br />";
+            $html .= Mage::helper('webforms')->__('Customer') . ": " . $this->getCustomerName() . "<br />";
+            $html .= Mage::helper('webforms')->__('IP') . ": " . $this->getIp() . "<br />";
         }
-        $html .= Mage::helper('webforms')->__('Date') . ": " . Mage::helper('core')->formatDate($this->getCreatedTime(), 'medium', true) . "<br>";
-        $html .= "<br>";
+        $html .= Mage::helper('webforms')->__('Date') . ": " . Mage::helper('core')->formatDate($this->getCreatedTime(), 'medium', true) . "<br />";
+        $html .= "<br />";
 
         $head_html = "";
         if ($options['header']) $head_html = $html;
@@ -837,13 +793,13 @@ class VladimirPopov_WebForms_Model_Results
                     $value = $this->getData('field_' . $field->getId());
                     if ($field->getType() == 'html')
                         $value = $field->getValue();
-                    if (is_string($value)) $value = trim($value);
-                    if ($value && $field_visibility) {
+
+                    if (strlen(trim($value)) && $field_visibility) {
                         if (!in_array($field->getType(), $options['skip_fields']) && $field->getResultDisplay() != 'off') {
                             $field_name = $field->getName();
                             if (strlen(trim($field->getResultLabel())) > 0)
                                 $field_name = $field->getResultLabel();
-                            if ($field->getResultDisplay() != 'value') $field_html .= '<b>' . $field_name . '</b><br>';
+                            if ($field->getResultDisplay() != 'value') $field_html .= '<b>' . $field_name . '</b><br/>';
                             $filename = $value;
                             switch ($field->getType()) {
                                 case 'date':
@@ -881,9 +837,7 @@ class VladimirPopov_WebForms_Model_Results
                                     break;
                             }
                             $k = true;
-                            $value = new Varien_Object(array('html' => $value, 'value' => $this->getData('field_' . $field->getId())));
-                            Mage::dispatchEvent('webforms_results_tohtml_value', array('field' => $field, 'value' => $value, 'result' => $this));
-                            $field_html .= $value->getHtml() . "<br><br>";
+                            $field_html .= $value . "<br /><br />";
                         }
                     }
 
@@ -947,8 +901,8 @@ class VladimirPopov_WebForms_Model_Results
 
     public function resizeImages()
     {
-        if (Mage::registry('result_resize_image_' . $this->getId())) return $this;
-        Mage::register('result_resize_image_' . $this->getId(), true);
+        if(Mage::registry('result_resize_image_'.$this->getId())) return $this;
+        Mage::register('result_resize_image_'.$this->getId(), true);
         foreach ($this->getWebform()->getFieldsToFieldsets(true) as $fieldset_id => $fieldset) {
             foreach ($fieldset["fields"] as $field) {
                 $field_value = $field->getValue();
@@ -967,7 +921,7 @@ class VladimirPopov_WebForms_Model_Results
                                 $imageObj = new Varien_Image($imageUrl);
                                 $imageObj->keepAspectRatio(true);
                                 $imageObj->keepTransparency(true);
-                                if (!$width) $width = $imageObj->getOriginalWidth();
+                                if(!$width) $width = $imageObj->getOriginalWidth();
                                 $imageObj->resize($width, $height);
                                 $imageObj->save($imageUrl);
                             }
@@ -979,4 +933,5 @@ class VladimirPopov_WebForms_Model_Results
         return $this;
     }
 }
+
 

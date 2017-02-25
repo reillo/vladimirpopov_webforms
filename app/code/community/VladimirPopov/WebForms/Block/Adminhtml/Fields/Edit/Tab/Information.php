@@ -107,28 +107,28 @@ class VladimirPopov_WebForms_Block_Adminhtml_Fields_Edit_Tab_Information
             'label' => Mage::helper('webforms')->__('Options'),
             'required' => false,
             'name' => 'value[options]',
-            'note' => Mage::helper('webforms')->__('Select values should be separated with new line<br>Use <i>^Option Text</i> to check default<br>Use <i>Option Text {{null}}</i> to create option without value</i><br>Use <i>Option Text {{val ...}}</i> to set different option value'),
+            'note' => Mage::helper('webforms')->__('Select values should be separated with new line<br>Use <i>^Option Text</i> to check default<br />Use <i>Option Text {{null}}</i> to create option without value</i><br/>Use <i>Option Text {{val ...}}</i> to set different option value'),
         ));
 
         $options_radio = $fieldset->addField('value_options_radio','textarea',array(
             'label' => Mage::helper('webforms')->__('Options'),
             'required' => false,
             'name' => 'value[options_radio]',
-            'note' => Mage::helper('webforms')->__('Select values should be separated with new line<br>Use <i>^Option Text</i> to check default<br>Use <i>Option Text {{null}}</i> to create option without value</i><br>Use <i>Option Text {{val ...}}</i> to set different option value'),
+            'note' => Mage::helper('webforms')->__('Select values should be separated with new line<br>Use <i>^Option Text</i> to check default<br />Use <i>Option Text {{null}}</i> to create option without value</i><br/>Use <i>Option Text {{val ...}}</i> to set different option value'),
         ));
 
         $options_checkbox = $fieldset->addField('value_options_checkbox','textarea',array(
             'label' => Mage::helper('webforms')->__('Options'),
             'required' => false,
             'name' => 'value[options_checkbox]',
-            'note' => Mage::helper('webforms')->__('Select values should be separated with new line<br>Use <i>^Option Text</i> to check default<br>Use <i>Option Text {{null}}</i> to create option without value</i><br>Use <i>Option Text {{val ...}}</i> to set different option value'),
+            'note' => Mage::helper('webforms')->__('Select values should be separated with new line<br>Use <i>^Option Text</i> to check default<br />Use <i>Option Text {{null}}</i> to create option without value</i><br/>Use <i>Option Text {{val ...}}</i> to set different option value'),
         ));
 
         $options_contact = $fieldset->addField('value_options_contact','textarea',array(
             'label' => Mage::helper('webforms')->__('Options'),
             'required' => false,
             'name' => 'value[options_contact]',
-            'note' => Mage::helper('webforms')->__('Select values should be separated with new line<br>Use <i>^Option Text</i> to check default<br>Options format:<br><i>Site Admin &lt;admin@mysite.com&gt;<br>Sales &lt;sales@mysite.com&gt;</i>'),
+            'note' => Mage::helper('webforms')->__('Select values should be separated with new line<br>Use <i>^Option Text</i> to check default<br />Options format:<br/><i>Site Admin &lt;admin@mysite.com&gt;<br>Sales &lt;sales@mysite.com&gt;</i>'),
         ));
 
         $text_value = $fieldset->addField('value_text','text',array(

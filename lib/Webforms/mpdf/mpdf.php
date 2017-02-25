@@ -1420,29 +1420,29 @@ function StartProgressBarOutput($mode=1) {
 		<div class="demo">
 	   ';
 	   if ($this->progressBar==2) { echo '		<table width="100%"><tr><td style="width: 50%;"> 
-			<span class="barheading">Writing HTML code</span> <br>
+			<span class="barheading">Writing HTML code</span> <br/>
 
 			<div class="progressBar">
 			<div id="element1"  class="innerBar">&nbsp;</div>
 			</div>
 			<span class="code" id="box1"></span>
 			</td><td style="width: 50%;">
-			<span class="barheading">Autosizing elements</span> <br>
+			<span class="barheading">Autosizing elements</span> <br/>
 			<div class="progressBar">
 			<div id="element4"  class="innerBar">&nbsp;</div>
 			</div>
 			<span class="code" id="box4"></span>
-			<br><br>
-			<span class="barheading">Writing Tables</span> <br>
+			<br/><br/>
+			<span class="barheading">Writing Tables</span> <br/>
 			<div class="progressBar">
 			<div id="element7"  class="innerBar">&nbsp;</div>
 			</div>
 			<span class="code" id="box7"></span>
 			</td></tr>
-			<tr><td><br><br></td><td></td></tr>
+			<tr><td><br /><br /></td><td></td></tr>
 			<tr><td style="width: 50%;"> 
 	'; }
-	echo '			<span class="barheading">Writing PDF file</span> <br>
+	echo '			<span class="barheading">Writing PDF file</span> <br/>
 			<div class="progressBar">
 			<div id="element2"  class="innerBar">&nbsp;</div>
 			</div>
@@ -1450,21 +1450,21 @@ function StartProgressBarOutput($mode=1) {
 	   ';
 	   if ($this->progressBar==2) { echo '
 			</td><td style="width: 50%;">
-			<span class="barheading">Memory usage</span> <br>
+			<span class="barheading">Memory usage</span> <br/>
 			<div class="progressBar">
 			<div id="element5"  class="innerBar">&nbsp;</div>
 			</div>
-			<span id="box5">0</span> '.ini_get("memory_limit").'<br>
-			<br><br>
-			<span class="barheading">Memory usage (peak)</span> <br>
+			<span id="box5">0</span> '.ini_get("memory_limit").'<br />
+			<br/><br/>
+			<span class="barheading">Memory usage (peak)</span> <br/>
 			<div class="progressBar">
 			<div id="element6"  class="innerBar">&nbsp;</div>
 			</div>
-			<span id="box6">0</span> '.ini_get("memory_limit").'<br>
+			<span id="box6">0</span> '.ini_get("memory_limit").'<br />
 			</td></tr>
 			</table>
 	   '; }
-	   echo '			<br><br>
+	   echo '			<br/><br/>
 		<span id="box3"></span>
 
 		</div>
@@ -8186,9 +8186,9 @@ function Output($name='',$dest='')
 	   $e = error_get_last(); 
 	   if (($e['type'] < 2048 && $e['type'] != 8) || (intval($e['type']) & intval(ini_get("error_reporting")))) {
 		echo "<p>Error message detected - PDF file generation aborted.</p>"; 
-		echo $e['message'].'<br>';
-		echo 'File: '.$e['file'].'<br>';
-		echo 'Line: '.$e['line'].'<br>';
+		echo $e['message'].'<br />';
+		echo 'File: '.$e['file'].'<br />';
+		echo 'Line: '.$e['line'].'<br />';
 		exit; 
 	   }
 	}
@@ -32056,7 +32056,7 @@ function AdjustHTML($html, $tabSpaces=8) {
 	$html = str_replace('</ttz><ttz>','|',$html);
 	$html = str_replace('</tta><tta>','|',$html);
 
-	$html = preg_replace('/<br \/>\s*/is',"<br>",$html);
+	$html = preg_replace('/<br \/>\s*/is',"<br />",$html);
 
 	$html = preg_replace('/<wbr[ \/]*>\s*/is',"&#173;",$html);
 
@@ -32105,7 +32105,7 @@ function AdjustHTML($html, $tabSpaces=8) {
 		$temp[2][$iterator] = preg_replace_callback("/^([^\n\t]*?)\t/m", array($this, 'tabs2spaces_callback'), $temp[2][$iterator]);	// mPDF 5.7+
 		$temp[2][$iterator] = preg_replace('/\t/',str_repeat(" ",$tabSpaces),$temp[2][$iterator]);
 
-		$temp[2][$iterator] = preg_replace('/\n/',"<br>",$temp[2][$iterator]);
+		$temp[2][$iterator] = preg_replace('/\n/',"<br />",$temp[2][$iterator]);
 		$temp[2][$iterator] = str_replace('\\',"\\\\",$temp[2][$iterator]);
 		//$html = preg_replace('#<pre(.*?)>(.*?)</pre>#si','<erp'.$temp[1][$iterator].'>'.$temp[2][$iterator].'</erp>',$html,1);
 		$html = preg_replace('#<pre(.*?)>(.*?)</pre>#si','<erp'.$temp[1][$iterator].'>'.str_replace('$','\$',$temp[2][$iterator]).'</erp>',$html,1);	// mPDF 5.7+

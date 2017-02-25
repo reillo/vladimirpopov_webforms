@@ -10,12 +10,12 @@ class VladimirPopov_WebForms_Model_Webforms
     extends VladimirPopov_WebForms_Model_Abstract
 {
 
-    const STATUS_ENABLED = 1;
+    const STATUS_ENABLED  = 1;
     const STATUS_DISABLED = 0;
 
     protected $_fields_to_fieldsets = array();
-    protected $_hidden = array();
-    protected $_logic_target = array();
+    protected $_hidden              = array();
+    protected $_logic_target        = array();
 
     public function _getFieldsToFieldsets()
     {
@@ -59,7 +59,7 @@ class VladimirPopov_WebForms_Model_Webforms
     public function getAvailableStatuses()
     {
         $statuses = new Varien_Object(array(
-            self::STATUS_ENABLED => Mage::helper('webforms')->__('Enabled'),
+            self::STATUS_ENABLED  => Mage::helper('webforms')->__('Enabled'),
             self::STATUS_DISABLED => Mage::helper('webforms')->__('Disabled'),
         ));
 
@@ -69,9 +69,8 @@ class VladimirPopov_WebForms_Model_Webforms
 
     }
 
-    public function getEmailSmtpValidation()
-    {
-        if ($this->getData('email_smtpvalidation') > 0) return $this->getData('email_smtpvalidation') - 1;
+    public function getEmailSmtpValidation(){
+        if($this->getData('email_smtpvalidation')>0) return $this->getData('email_smtpvalidation')-1;
         return Mage::getStoreConfig('webforms/email/smtpvalidation');
     }
 
@@ -81,30 +80,29 @@ class VladimirPopov_WebForms_Model_Webforms
 
         // filter by role permissions
         $username = Mage::getSingleton('admin/session')->getUser()->getUsername();
-        $role = Mage::getModel('admin/user')->getCollection()->addFieldToFilter('username', $username)->getFirstItem()->getRole();
+        $role = Mage::getModel('admin/user')->getCollection()->addFieldToFilter('username',$username)->getFirstItem()->getRole();
         $rule_all = Mage::getModel('admin/rules')->getCollection()
-            ->addFilter('role_id', $role->getId())
-            ->addFilter('resource_id', 'all')
+            ->addFilter('role_id',$role->getId())
+            ->addFilter('resource_id','all')
             ->getFirstItem();
-        if ($rule_all->getPermission() == 'deny') {
+        if($rule_all->getPermission() == 'deny'){
             $collection->addRoleFilter($role->getId());
         }
-
+                
         $option_array = array();
         foreach ($collection as $webform)
             $option_array[] = array('value' => $webform->getId(), 'label' => $webform->getName());
         return $option_array;
     }
 
-    public function getGridOptions($store_id = false)
-    {
+    public function getGridOptions($store_id = false){
         $collection = $this->getCollection()->addOrder('name', 'asc');
-        if ($store_id) {
+        if($store_id){
             $collection->setStoreId($store_id);
         }
 
         $option_array = array();
-        foreach ($collection as $webform) {
+        foreach($collection as $webform){
             $option_array[$webform->getId()] = $webform->getName();
         }
         return $option_array;
@@ -285,9 +283,9 @@ class VladimirPopov_WebForms_Model_Webforms
                         $logic_target[] = array(
                             "id" => $target,
                             "logic_visibility" =>
-                                in_array($target, $hidden_targets) ?
-                                    VladimirPopov_WebForms_Model_Logic::VISIBILITY_HIDDEN :
-                                    VladimirPopov_WebForms_Model_Logic::VISIBILITY_VISIBLE,
+                            in_array($target, $hidden_targets) ?
+                                VladimirPopov_WebForms_Model_Logic::VISIBILITY_HIDDEN :
+                                VladimirPopov_WebForms_Model_Logic::VISIBILITY_VISIBLE,
                             "required" => $required
                         );
                 }
@@ -495,11 +493,11 @@ class VladimirPopov_WebForms_Model_Webforms
     public function getUploadLimit($type = 'file')
     {
         $upload_limit = Mage::getStoreConfig('webforms/files/upload_limit');
-        if ($this->getFilesUploadLimit())
+        if($this->getFilesUploadLimit())
             $upload_limit = $this->getFilesUploadLimit();
-        if ($type == 'image') {
+        if($type == 'image'){
             $upload_limit = Mage::getStoreConfig('webforms/images/upload_limit');
-            if ($this->getImagesUploadLimit())
+            if($this->getImagesUploadLimit())
                 $upload_limit = $this->getImagesUploadLimit();
         }
         return intval($upload_limit);
@@ -526,8 +524,8 @@ class VladimirPopov_WebForms_Model_Webforms
         }
 
         // check honeypot captcha
-        if (Mage::getStoreConfig('webforms/honeypot/enable')) {
-            if (Mage::app()->getRequest()->getPost('message')) {
+        if (Mage::getStoreConfig('webforms/honeypot/enable')){
+            if(Mage::app()->getRequest()->getPost('message')){
                 $errors[] = Mage::helper('webforms')->__('Spam bot detected. Honeypot field should be empty.');
             }
         }
@@ -549,7 +547,7 @@ class VladimirPopov_WebForms_Model_Webforms
                         $pattern = trim($field->getValidateRegex());
 
                         // clear global modifier
-                        if (substr($pattern, 0, 1) == '/' && substr($pattern, -2) == '/g') $pattern = substr($pattern, 0, strlen($pattern) - 1);
+                        if(substr($pattern,0,1) == '/' && substr($pattern,-2) == '/g') $pattern = substr($pattern,0,strlen($pattern)-1);
 
                         $status = @preg_match($pattern, "Test");
                         if (false === $status) {
@@ -588,7 +586,7 @@ class VladimirPopov_WebForms_Model_Webforms
                 }
 
                 // check if the e-mail address is valid
-                if ($this->getEmailSmtpValidation()) {
+                if($this->getEmailSmtpValidation()){
                     if ($field->getIsActive() && $field->getType() == 'email') {
                         if (!empty($postData[$field->getId()])) {
                             $smtp_validate = new SMTP_validateEmail();
@@ -597,7 +595,7 @@ class VladimirPopov_WebForms_Model_Webforms
                                 $errors[] = Mage::helper('webforms')->__('E-mail address does not seem to exist: %s', $postData[$field->getId()]);
                             }
                         }
-                    }
+                    }               
                 }
 
                 // check e-mail stoplist
@@ -613,7 +611,7 @@ class VladimirPopov_WebForms_Model_Webforms
         // check files
         $files = $this->getUploadedFiles();
         foreach ($files as $field_name => $file) {
-            if (!empty($file['error']) && $file['error'] == UPLOAD_ERR_INI_SIZE) {
+            if(!empty($file['error']) && $file['error'] == UPLOAD_ERR_INI_SIZE){
                 $errors[] = Mage::helper('webforms')->__('Uploaded file %s exceeds allowed limit: %s', $file['name'], ini_get('upload_max_filesize'));
             }
             if (isset($file['name']) && file_exists($file['tmp_name'])) {
@@ -647,6 +645,7 @@ class VladimirPopov_WebForms_Model_Webforms
                     if ($filesize > $files_upload_limit && $files_upload_limit > 0) {
                         $errors[] = Mage::helper('webforms')->__('Uploaded file %s (%s kB) exceeds allowed limit: %s kB', $file['name'], $filesize, $files_upload_limit);
                     }
+
 
 
                 }
@@ -689,10 +688,10 @@ class VladimirPopov_WebForms_Model_Webforms
             $new_result = true;
             if (!empty($postData['result_id'])) {
                 $new_result = false;
-                $result->load($postData['result_id'])->addFieldArray(false, array('select/radio', 'select/checkbox'));
+                $result->load($postData['result_id'])->addFieldArray(false,array('select/radio','select/checkbox'));
 
-                foreach ($result->getData('field') as $key => $value) {
-                    if (!array_key_exists($key, $postData['field'])) {
+                foreach($result->getData('field') as $key=>$value){
+                    if(!array_key_exists($key,$postData['field'])){
                         $postData['field'][$key] = '';
                     }
                 }
@@ -729,7 +728,7 @@ class VladimirPopov_WebForms_Model_Webforms
                     $postData['field'][$field_id] = '';
                 }
             }
-            if ($new_result) {
+            if($new_result) {
                 $approve = 1;
                 if ($this->getApprove()) $approve = 0;
             }
@@ -738,10 +737,9 @@ class VladimirPopov_WebForms_Model_Webforms
                 ->setWebformId($this->getId())
                 ->setStoreId(Mage::app()->getStore()->getId())
                 ->setCustomerId(Mage::getSingleton('customer/session')->getCustomerId())
-                ->setCustomerIp($iplong);
-            if (!empty($approve))
-                $result->setApproved($approve);
-            $result->save();
+                ->setCustomerIp($iplong)
+                ->setApproved($approve)
+                ->save();
 
             $fields = Mage::getModel('webforms/fields')
                 ->setStoreId($this->getStoreId())
@@ -850,16 +848,16 @@ class VladimirPopov_WebForms_Model_Webforms
     {
         // filter by role permissions
         $username = Mage::getSingleton('admin/session')->getUser()->getUsername();
-        $role = Mage::getModel('admin/user')->getCollection()->addFieldToFilter('username', $username)->getFirstItem()->getRole();
+        $role = Mage::getModel('admin/user')->getCollection()->addFieldToFilter('username',$username)->getFirstItem()->getRole();
         $rule_all = Mage::getModel('admin/rules')->getCollection()
-            ->addFilter('role_id', $role->getId())
-            ->addFilter('resource_id', 'all')
+            ->addFilter('role_id',$role->getId())
+            ->addFilter('resource_id','all')
             ->getFirstItem();
-        if ($rule_all->getPermission() == 'allow') return 'allow';
+        if($rule_all->getPermission() == 'allow') return 'allow';
 
         return Mage::getModel('admin/rules')->getCollection()
-            ->addFilter('role_id', $role->getId())
-            ->addFilter('resource_id', 'admin/webforms/webform_' . $this->getId())
+            ->addFilter('role_id',$role->getId())
+            ->addFilter('resource_id','admin/webforms/webform_'. $this->getId())
             ->getFirstItem()
             ->getPermission();
 
@@ -867,24 +865,20 @@ class VladimirPopov_WebForms_Model_Webforms
 
     public function canAccess()
     {
-        if ($this->getAccessEnable()) {
+        if($this->getAccessEnable()){
             $groupId = Mage::getSingleton('customer/session')->getCustomerGroupId();
-            if (in_array($groupId, $this->getAccessGroups()))
+            if(in_array($groupId, $this->getAccessGroups()))
                 return true;
             return false;
         }
         return true;
     }
 
-    public function getStatusEmailTemplateId($status)
-    {
-        switch ($status) {
-            case VladimirPopov_WebForms_Model_Results::STATUS_APPROVED:
-                return $this->getEmailTemplateApproved();
-            case VladimirPopov_WebForms_Model_Results::STATUS_NOTAPPROVED:
-                return $this->getEmailTemplateNotapproved();
-            case VladimirPopov_WebForms_Model_Results::STATUS_COMPLETED:
-                return $this->getEmailTemplateCompleted();
+    public function getStatusEmailTemplateId($status){
+        switch($status){
+            case VladimirPopov_WebForms_Model_Results::STATUS_APPROVED: return $this->getEmailTemplateApproved();
+            case VladimirPopov_WebForms_Model_Results::STATUS_NOTAPPROVED: return $this->getEmailTemplateNotapproved();
+            case VladimirPopov_WebForms_Model_Results::STATUS_COMPLETED: return $this->getEmailTemplateCompleted();
         }
     }
 }

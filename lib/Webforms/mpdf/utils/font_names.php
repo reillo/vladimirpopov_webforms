@@ -60,7 +60,7 @@ foreach($ff AS $f) {
 	}
 	for ($i=0; $i<count($ret); $i++) {
 	   if (!is_array($ret[$i])) { 
-		if (!$pdf) echo $ret[$i].'<br>';
+		if (!$pdf) echo $ret[$i].'<br />'; 
 	   }
 	   else {
 		$tfname = $ret[$i][0];
@@ -103,7 +103,7 @@ if (!$pdf) {
 
 foreach ($tempfontdata AS $fname => $v) {
 	if (!isset($tempfontdata[$fname]['R']) || !$tempfontdata[$fname]['R']) {
-		if (!$pdf) echo 'WARNING - Font file for '.$fname.' may be an italic cursive script, or extra-bold etc.<br>';
+		if (!$pdf) echo 'WARNING - Font file for '.$fname.' may be an italic cursive script, or extra-bold etc.<br />';
 		if (isset($tempfontdata[$fname]['I']) && $tempfontdata[$fname]['I']) {
 			$tempfontdata[$fname]['R'] = $tempfontdata[$fname]['I'];
 		}
@@ -115,28 +115,28 @@ foreach ($tempfontdata AS $fname => $v) {
 		}
 	}
 	if (isset($tempfontdata[$fname]['smp']) && $tempfontdata[$fname]['smp']) {
-		if (!$pdf) echo 'INFO - Font file '.$fname.' contains characters in Unicode Plane 1 SMP<br>';
+		if (!$pdf) echo 'INFO - Font file '.$fname.' contains characters in Unicode Plane 1 SMP<br />';
 		$tempfontdata[$fname]['smp'] = false;
 	}
 //	if (isset($tempfontdata[$fname]['pua']) && $tempfontdata[$fname]['pua']) {
-//		if (!$pdf) echo 'INFO - Font file '.$fname.' contains characters in Unicode Private Use Area (U+E000-U+F8FF)<br>';
+//		if (!$pdf) echo 'INFO - Font file '.$fname.' contains characters in Unicode Private Use Area (U+E000-U+F8FF)<br />';
 //	}
 	if (isset($tempfontdata[$fname]['unAGlyphs']) && $tempfontdata[$fname]['unAGlyphs']) {
-		if (!$pdf) echo 'INFO - Font file '.$fname.' contains non-indexed Arabic Glyphs "unAGlyphs" (which can be mapped to U+F500-U+F7FF)<br>';
+		if (!$pdf) echo 'INFO - Font file '.$fname.' contains non-indexed Arabic Glyphs "unAGlyphs" (which can be mapped to U+F500-U+F7FF)<br />';
 		if (isset($tempfontdata[$fname]['puaag']) && $tempfontdata[$fname]['puaag']) {
-			if (!$pdf) echo 'WARNING - Font file '.$fname.' already includes mapped characters in the part of Unicode Private Use Area which mPDF uses for mapping non-indexed Arabic Glyphs "unAGlyphs" (U+F500-U+F7FF)<br>';
+			if (!$pdf) echo 'WARNING - Font file '.$fname.' already includes mapped characters in the part of Unicode Private Use Area which mPDF uses for mapping non-indexed Arabic Glyphs "unAGlyphs" (U+F500-U+F7FF)<br />';
 		}
 	}
 	if (isset($tempfontdata[$fname]['sip']) && $tempfontdata[$fname]['sip']) {
-		if (!$pdf) echo 'INFO - Font file '.$fname.' contains characters in Unicode Plane 2 SIP<br>';
+		if (!$pdf) echo 'INFO - Font file '.$fname.' contains characters in Unicode Plane 2 SIP<br />';
 		if (preg_match('/^(.*)-extb/',$fname, $fm)) {
 			if (isset($tempfontdata[($fm[1])]) && $tempfontdata[($fm[1])]) {
 				$tempfontdata[($fm[1])]['sip-ext'] = $fname;
-				if (!$pdf) echo 'INFO - Font file '.$fname.' has been defined as a CJK ext-B for '.($fm[1]).'<br>';
+				if (!$pdf) echo 'INFO - Font file '.$fname.' has been defined as a CJK ext-B for '.($fm[1]).'<br />';
 			}
 			else if (isset($tempfontdata[($fm[1].'-exta')]) && $tempfontdata[($fm[1].'-exta')]) {
 				$tempfontdata[($fm[1].'-exta')]['sip-ext'] = $fname;
-				if (!$pdf) echo 'INFO - Font file '.$fname.' has been defined as a CJK ext-B for '.($fm[1].'-exta').'<br>';
+				if (!$pdf) echo 'INFO - Font file '.$fname.' has been defined as a CJK ext-B for '.($fm[1].'-exta').'<br />';
 			}
 		}
 		// else { unset($tempfontdata[$fname]['sip']); }

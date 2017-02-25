@@ -13,12 +13,12 @@ class VladimirPopov_WebForms_Adminhtml_FieldsController
 			->_setActiveMenu('webforms/webforms');
 		return $this;
 	}
-	
+
 	public function indexAction(){
 		$this->_initAction();
 		$this->renderLayout();
 	}
-	
+
 	public function gridAction()
 	{
 		$this->loadLayout();
@@ -28,14 +28,14 @@ class VladimirPopov_WebForms_Adminhtml_FieldsController
 		$this->getResponse()->setBody(
 			$this->getLayout()->createBlock('webforms/adminhtml_webforms_edit_tab_fields')->toHtml()
 		);
-	}	
-	
+	}
+
 	public function editAction(){
 		if((float)substr(Mage::getVersion(),0,3) > 1.3)
 			$this->_title($this->__('Web-forms'))->_title($this->__('Edit Field'));
 		$fieldsId = $this->getRequest()->getParam('id');
 		$webformsId = $this->getRequest()->getParam('webform_id');
-		
+
 		$store = $this->getRequest()->getParam('store');
 		$field = Mage::getModel('webforms/fields')->setStoreId($store)->load($fieldsId);
 		if($field->getWebformId()){
@@ -60,22 +60,22 @@ class VladimirPopov_WebForms_Adminhtml_FieldsController
 			$this->_setActiveMenu('webforms/webforms');
 			$this->_addBreadcrumb(Mage::helper('adminhtml')->__('WebForms'),Mage::helper('adminhtml')->__('Web-forms'));
 			$this->getLayout()->getBlock('head')->setCanLoadExtJs(true);
-			
+
 			$this->_addContent($this->getLayout()->createBlock('webforms/adminhtml_fields_edit'))
 				->_addLeft($this->getLayout()->createBlock('webforms/adminhtml_fields_edit_tabs'));
-				
+
 			$this->renderLayout();
 		} else {
 			Mage::getSingleton('adminhtml/session')->addError(Mage::helper('webforms')->__('Field does not exist'));
-			$this->_redirect('*/adminhtml_webforms/edit',array('id' => $webformsId));
+			$this->_redirect('adminhtml/webforms/edit',array('id' => $webformsId));
 		}
 	}
-	
+
 	public function newAction()
 	{
 		$this->_forward('edit');
 	}
-	
+
 	public function saveAction()
 	{
 		if( $this->getRequest()->getPost()){
@@ -83,18 +83,18 @@ class VladimirPopov_WebForms_Adminhtml_FieldsController
 				$id = $this->getRequest()->getParam('id');
 				$postData = $this->getRequest()->getPost('field');
 				$store = Mage::app()->getRequest()->getParam('store');
-                empty($postData["type"]) ? $type = Mage::getModel('webforms/fields')->setStoreId($store)->load($id)->getType() : $type=$postData["type"];
-				switch($type){
+
+				switch($postData["type"]){
 					case 'text':
 						break;
 					case 'email':
-						if(!empty($postData["hint_email"])) $postData["hint"] = $postData["hint_email"];
+						$postData["hint"] = $postData["hint_email"];
 						break;
 					case 'url':
-						if(!empty($postData["hint_url"])) $postData["hint"] = $postData["hint_url"];
+						$postData["hint"] = $postData["hint_url"];
 						break;
 					case 'textarea':
-						if(!empty($postData["hint_textarea"])) $postData["hint"] = $postData["hint_textarea"];
+						$postData["hint"] = $postData["hint_textarea"];
 						break;
 					case 'hidden':
 						if(Mage::getModel('webforms/fields')->getAdminHiddenPermission() == 'deny'){
@@ -106,13 +106,13 @@ class VladimirPopov_WebForms_Adminhtml_FieldsController
 				}
 				$webform_id = $postData["webform_id"];
 				$saveandcontinue = $this->getRequest()->getParam('back');
-				
+
 				unset($postData["saveandcontinue"]);
-				
+
 				$field = Mage::getModel('webforms/fields');
-				
+
 				$field->setId($id);
-					
+
 
 				if($store){
 					unset($postData["webform_id"]);
@@ -122,16 +122,16 @@ class VladimirPopov_WebForms_Adminhtml_FieldsController
 
 				if( $this->getRequest()->getParam('id') <= 0 )
 					$field->setCreatedTime(Mage::getSingleton('core/date')->gmtDate())->save();
-				
+
 				Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('adminhtml')->__('Field was successfully saved'));
 				Mage::getSingleton('adminhtml/session')->setWebFormsData(false);
-				
+
 				if($saveandcontinue){
-					$this->_redirect('*/adminhtml_fields/edit',array('id' => $field->getId(),'webform_id' => $webform_id,'store'=>$store,'active_tab'=>$this->getRequest()->getParam('active_tab')));
+					$this->_redirect('adminhtml/fields/edit',array('id' => $field->getId(),'webform_id' => $webform_id,'store'=>$store,'active_tab'=>$this->getRequest()->getParam('active_tab')));
 				} else {
-					$this->_redirect('*/adminhtml_webforms/edit',array('id' => $webform_id,'tab' => 'form_fields','store'=>$store));
+					$this->_redirect('adminhtml/webforms/edit',array('id' => $webform_id,'tab' => 'form_fields','store'=>$store));
 				}
-				
+
 				return;
 			} catch (Exception $e){
 				Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
@@ -139,12 +139,12 @@ class VladimirPopov_WebForms_Adminhtml_FieldsController
 				$this->_redirect('*/*/edit',array('id' => $this->getRequest()->getParam('id'),'store'=>$store));
 				return;
 			}
-			
+
 		}
         Mage::getSingleton('adminhtml/session')->addError(Mage::helper('webforms')->__('Unexpected error'));
-        $this->_redirect('*/adminhtml_webforms/index');
+        $this->_redirect('adminhtml/webforms/index');
 	}
-	
+
 	public function deleteAction()
 	{
 		if( $this->getRequest()->getParam('id') > 0){
@@ -158,13 +158,13 @@ class VladimirPopov_WebForms_Adminhtml_FieldsController
 				$this->_redirect('*/*/edit', array('id' => $this->getRequest()->getParam('id')));
 			}
 		}
-		$this->_redirect('*/adminhtml_webforms/edit',array('id' => $webform_id,'tab' => 'form_fields'));
+		$this->_redirect('adminhtml/webforms/edit',array('id' => $webform_id,'tab' => 'form_fields'));
 	}
-	
+
 	public function massDeleteAction()
 	{
 		$Ids = (array)$this->getRequest()->getParam('id');
-		
+
 		try {
 			foreach($Ids as $id){
 				$result = Mage::getModel('webforms/fields')->load($id);
@@ -185,20 +185,20 @@ class VladimirPopov_WebForms_Adminhtml_FieldsController
 			$this->_getSession()->addException($e, $this->__('An error occurred while updating records.'));
 		}
 
-		$this->_redirect('webforms_admin/adminhtml_webforms/edit',array('id' => $this->getRequest()->getParam('webform_id'),'tab' => 'form_fields'));
+		$this->_redirect('adminhtml/webforms/edit',array('id' => $this->getRequest()->getParam('webform_id'),'tab' => 'form_fields'));
 	}
-	
+
 	public function massStatusAction(){
 		$Ids = (array)$this->getRequest()->getParam('id');
 		$status = (int)$this->getRequest()->getParam('status');
 		$store = $this->getRequest()->getParam('store');
 		$data = array('is_active',$status);
-		
+
 		try {
 			foreach($Ids as $id){
 				if($store){
 					$result = Mage::getModel('webforms/fields')->setId($id);
-					$result->updateStoreData($store,$data);					
+					$result->updateStoreData($store,$data);
 				} else {
 					$result = Mage::getModel('webforms/fields')->load($id);
 					$result->setData('is_active',$status);
@@ -219,14 +219,14 @@ class VladimirPopov_WebForms_Adminhtml_FieldsController
 		catch (Exception $e) {
 			$this->_getSession()->addException($e, $this->__('An error occurred while updating records.'));
 		}
-		
-		$this->_redirect('webforms_admin/adminhtml_webforms/edit',array('id' => $this->getRequest()->getParam('webform_id'),'tab' => 'form_fields','store'=>$store));
+
+		$this->_redirect('adminhtml/webforms/edit',array('id' => $this->getRequest()->getParam('webform_id'),'tab' => 'form_fields','store'=>$store));
 	}
-	
+
 	public function massFieldsetAction(){
 		$Ids = (array)$this->getRequest()->getParam('id');
 		$fieldset = (int)$this->getRequest()->getParam('fieldset');
-		
+
 		try {
 			foreach($Ids as $id){
 				$result = Mage::getModel('webforms/fields')->load($id);
@@ -247,13 +247,13 @@ class VladimirPopov_WebForms_Adminhtml_FieldsController
 		catch (Exception $e) {
 			$this->_getSession()->addException($e, $this->__('An error occurred while updating records.'));
 		}
-		
-		$this->_redirect('webforms_admin/adminhtml_webforms/edit',array('id' => $this->getRequest()->getParam('webform_id'),'tab' => 'form_fields'));
+
+		$this->_redirect('adminhtml/webforms/edit',array('id' => $this->getRequest()->getParam('webform_id'),'tab' => 'form_fields'));
 	}
-	
+
 	public function massDuplicateAction(){
 		$Ids = (array)$this->getRequest()->getParam('id');
-		
+
 		try {
 			foreach($Ids as $id){
 				$result = Mage::getModel('webforms/fields')->load($id);
@@ -273,9 +273,9 @@ class VladimirPopov_WebForms_Adminhtml_FieldsController
 		catch (Exception $e) {
 			$this->_getSession()->addException($e, $this->__('An error occurred while duplicating records.'));
 		}
-		
-		$this->_redirect('webforms_admin/adminhtml_webforms/edit',array('id' => $this->getRequest()->getParam('webform_id'),'tab' => 'form_fields'));
+
+		$this->_redirect('adminhtml/webforms/edit',array('id' => $this->getRequest()->getParam('webform_id'),'tab' => 'form_fields'));
 	}
-	
+
 }
 ?>

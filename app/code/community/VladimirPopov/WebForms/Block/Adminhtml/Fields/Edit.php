@@ -66,17 +66,17 @@ class VladimirPopov_WebForms_Block_Adminhtml_Fields_Edit
 
     public function getSaveUrl()
     {
-        return $this->getUrl('*/adminhtml_webforms/save', array('webform_id' => Mage::registry('webforms_data')->getId()));
+        return $this->getUrl('adminhtml/webforms/save', array('webform_id' => Mage::registry('webforms_data')->getId()));
     }
 
     public function getBackUrl()
     {
-        return $this->getUrl('*/adminhtml_webforms/edit', array('id' => Mage::registry('webforms_data')->getId()));
+        return $this->getUrl('adminhtml/webforms/edit', array('id' => Mage::registry('webforms_data')->getId()));
     }
 
     public function getAddLogicUrl()
     {
-        return $this->getUrl('*/adminhtml_logic/new', array('field_id' => Mage::registry('field')->getId()));
+        return $this->getUrl('adminhtml/logic/new', array('field_id' => Mage::registry('field')->getId()));
     }
 
     public function getHeaderText()

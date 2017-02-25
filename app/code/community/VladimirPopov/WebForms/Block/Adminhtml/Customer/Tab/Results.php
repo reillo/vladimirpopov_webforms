@@ -112,6 +112,7 @@ class VladimirPopov_WebForms_Block_Adminhtml_Customer_Tab_Results
                 'recipient' => array(
                     'name' => 'recipient_email',
                     'type' => 'text',
+                    'class' => 'validate-email',
                     'label' => Mage::helper('webforms')->__('Recipient e-mail'),
                     'value' => $this->getRecipientEmail(),
                 )

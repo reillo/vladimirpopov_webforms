@@ -26,7 +26,7 @@ class VladimirPopov_WebForms_Adminhtml_ResultsController
 
         if($webformsModel->getId() && $webformsModel->getAdminPermission() != 'allow'){
             Mage::getSingleton('adminhtml/session')->addError(Mage::helper('webforms')->__('Access denied.'));
-            return $this->_redirect('*/adminhtml_webforms/');    
+            return $this->_redirect('adminhtml/webforms/');
         }
 
         $this->_initAction();
@@ -74,10 +74,10 @@ class VladimirPopov_WebForms_Adminhtml_ResultsController
                         $this->_redirect('adminhtml/customer/edit', array('id'=>$customerId,'tab' => 'webform_results'));
                         return;
                     }
-                    $this->_redirect('*/adminhtml_results/edit', array('_current'=>true,'id' => $resultId));
+                    $this->_redirect('adminhtml/results/edit', array('_current'=>true,'id' => $resultId));
                     return;
                 }
-                $this->_redirect('*/adminhtml_results/index', array('webform_id' => $webformId));
+                $this->_redirect('adminhtml/results/index', array('webform_id' => $webformId));
                 return;
             }
 
@@ -86,13 +86,13 @@ class VladimirPopov_WebForms_Adminhtml_ResultsController
             Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('webforms')->__('Result was successfully saved'));
 
             if ($saveandcontinue) {
-                $this->_redirect('*/adminhtml_results/edit', array('_current'=>true,'id' => $resultId));
+                $this->_redirect('adminhtml/results/edit', array('_current'=>true,'id' => $resultId));
             } else {
                 if($customerId){
                     $this->_redirect('adminhtml/customer/edit', array('id'=>$customerId,'tab' => 'webform_results'));
                     return;
                 }
-                $this->_redirect('*/adminhtml_results/index', array('webform_id' => $webformId));
+                $this->_redirect('adminhtml/results/index', array('webform_id' => $webformId));
             }
         }
     }
@@ -126,7 +126,7 @@ class VladimirPopov_WebForms_Adminhtml_ResultsController
             $message = $filter->filter($post['message']);
 
             if (Mage::getStoreConfig('webforms/message/nl2br', $result->getStoreId())) {
-                $message = str_replace("</p><br>", "</p>", nl2br($post['message'], true));
+                $message = str_replace("</p><br />", "</p>", nl2br($post['message'], true));
             }
 
             $message = Mage::getModel('webforms/message')
@@ -344,7 +344,7 @@ class VladimirPopov_WebForms_Adminhtml_ResultsController
             $this->_redirect('adminhtml/customer/edit', array('id'=>$customerId,'tab' => 'webform_results'));
             return;
         }
-        $this->_redirect('*/*/', array('webform_id' => $form_id));        
+        $this->_redirect('*/*/', array('webform_id' => $form_id));
     }
 
     public function popupAction(){

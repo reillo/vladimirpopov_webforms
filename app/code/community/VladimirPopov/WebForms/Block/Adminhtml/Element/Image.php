@@ -13,7 +13,7 @@ class VladimirPopov_WebForms_Block_Adminhtml_Element_Image extends VladimirPopov
 				$html.= '<div><img src="'.$thumbnail.'"/></div>';
 			}
 			if($value){
-				$html.='<nobr><a href="'.$result->getDownloadLink($field_id,$value).'">'.$value.'</a> <small>['.$result->getFileSizeText($field_id,$value).']</small></nobr><br>';
+				$html.='<nobr><a href="'.$result->getDownloadLink($field_id,$value).'">'.$value.'</a> <small>['.$result->getFileSizeText($field_id,$value).']</small></nobr><br/>';
 			}
 		}
 		return $html;

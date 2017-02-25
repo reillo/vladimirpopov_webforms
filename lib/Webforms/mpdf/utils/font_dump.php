@@ -152,7 +152,7 @@ $justfinishedblankinvalid = false;
 				}
 			}
 			else if($range) {
-				$html .= '</tr></table><br>';
+				$html .= '</tr></table><br />';
 				$mpdf->WriteHTML($html); $html = '';
 				$html .= '<table cellpadding="2" cellspacing="0" style="font-family:'.$font.';text-align:center; border-collapse: collapse; ">';
     				$html .= '<tr><td colspan="18" style="font-family:dejavusanscondensed;font-size:8pt;font-weight:bold">'.strtoupper($range).' (U+'.$rangestart.'-U+'.$rangeend.')</td></tr>';
@@ -181,7 +181,7 @@ $justfinishedblankinvalid = false;
    		}
 
         	if ($i > 0 && ($i % 16) == 0 && ($range != $lastrange)) {
-			$html .= '</tr></table><br>';
+			$html .= '</tr></table><br />';
 			$mpdf->WriteHTML($html); $html = '';
 			$html .= '<table cellpadding="2" cellspacing="0" style="font-family:'.$font.';text-align:center; border-collapse: collapse; ">';
     			$html .= '<tr><td colspan="18" style="font-family:dejavusanscondensed;font-size:8pt;font-weight:bold">'.strtoupper($range).' (U+'.$rangestart.'-U+'.$rangeend.')</td></tr>';
@@ -210,7 +210,7 @@ $justfinishedblankinvalid = false;
     if (($i % 16) > 0) {
 	for ($j = ($i % 16); $j < 16; ++$j) { $html .= '<td style="background-color: #555555;"></td>'; }
     }
-    $html .= '</tr></table><br>';
+    $html .= '</tr></table><br />';
 //==============================================================
 function _getCharWidth(&$cw, $u, $isdef=true) {
 	if ($u==0) { $w = false; }

@@ -237,6 +237,12 @@ class VladimirPopov_WebForms_Helper_Data
             }
         }
 
+        if (in_array('cms_page', $layout->getUpdate()->getHandles()) || in_array('webforms_index_index', $layout->getUpdate()->getHandles())) {
+            if (!$this->isProduction()) {
+                Mage::getSingleton('core/session')->addError($this->getNote());
+            }
+        }
+
         // add custom assets
         Mage::dispatchEvent('webforms_add_assets', array('layout' => $layout));
 
@@ -267,7 +273,6 @@ class VladimirPopov_WebForms_Helper_Data
 
         return $suffix;
     }
-    
     public function randomAlphaNum($length = 6)
     {
         $rangeMin = pow(36, $length - 1); //smallest number to give length digits in base 36

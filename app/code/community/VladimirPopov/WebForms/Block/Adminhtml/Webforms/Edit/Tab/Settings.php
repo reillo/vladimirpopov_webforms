@@ -88,24 +88,24 @@ class VladimirPopov_WebForms_Block_Adminhtml_Webforms_Edit_Tab_Settings
             'required' => false,
             'values'   => Mage::getModel('webforms/webforms')->getTemplatesOptions(),
         ));
-//
-//        $fieldset = $form->addFieldset('webforms_print', array(
-//            'legend' => Mage::helper('webforms')->__('Print Settings')
-//        ));
-//
-//        $fieldset->addField('print_template_id', 'select',array(
-//            'label'     => Mage::helper('webforms')->__('Print template'),
-//            'name'      => 'print_template_id',
-//            'note'      => Mage::helper('webforms')->__('Select template for printable version of submission results'),
-//            'values'    => Mage::getModel('webforms/webforms')->getTemplatesOptions(),
-//        ));
-//
-//        $fieldset->addField('print_attach_to_email', 'select', array(
-//            'label'     => Mage::helper('webforms')->__('Attach PDF to email'),
-//            'name'      => 'print_attach_to_email',
-//            'note'      => Mage::helper('webforms')->__('Attach printable version of the result to email'),
-//            'values'   => Mage::getModel('adminhtml/system_config_source_yesno')->toOptionArray(),
-//        ));
+
+        $fieldset = $form->addFieldset('webforms_print', array(
+            'legend' => Mage::helper('webforms')->__('Print Settings')
+        ));
+
+        $fieldset->addField('print_template_id', 'select',array(
+            'label'     => Mage::helper('webforms')->__('Print template'),
+            'name'      => 'print_template_id',
+            'note'      => Mage::helper('webforms')->__('Select template for printable version of submission results'),
+            'values'    => Mage::getModel('webforms/webforms')->getTemplatesOptions(),
+        ));
+
+        $fieldset->addField('print_attach_to_email', 'select', array(
+            'label'     => Mage::helper('webforms')->__('Attach PDF to email'),
+            'name'      => 'print_attach_to_email',
+            'note'      => Mage::helper('webforms')->__('Attach printable version of the result to email'),
+            'values'   => Mage::getModel('adminhtml/system_config_source_yesno')->toOptionArray(),
+        ));
 
         $fieldset = $form->addFieldset('webforms_captcha', array(
             'legend' => Mage::helper('webforms')->__('reCaptcha Settings')

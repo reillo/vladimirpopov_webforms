@@ -45,7 +45,7 @@ class VladimirPopov_WebForms_Model_Fields extends VladimirPopov_WebForms_Model_A
         ));
 
         // check hidden field permission
-        if ($this->getAdminHiddenPermission() == 'allow') $types->setData('hidden', Mage::helper('webforms')->__('Hidden'));
+        if($this->getAdminHiddenPermission() == 'allow') $types->setData('hidden',Mage::helper('webforms')->__('Hidden'));
 
         // add more field types
         Mage::dispatchEvent('webforms_fields_types', array('types' => $types));
@@ -54,17 +54,17 @@ class VladimirPopov_WebForms_Model_Fields extends VladimirPopov_WebForms_Model_A
 
     }
 
-    public function getAdminHiddenPermission()
-    {
+    public function getAdminHiddenPermission(){
         $username = Mage::getSingleton('admin/session')->getUser()->getUsername();
-        $role = Mage::getModel('admin/user')->getCollection()->addFieldToFilter('username', $username)->getFirstItem()->getRole();
+        $role = Mage::getModel('admin/user')->getCollection()->addFieldToFilter('username',$username)->getFirstItem()->getRole();
         $rule_all = Mage::getModel('admin/rules')->getCollection()
-            ->addFilter('role_id', $role->getId())
-            ->addFilter('resource_id', 'all')
+            ->addFilter('role_id',$role->getId())
+            ->addFilter('resource_id','all')
             ->getFirstItem();
-        if ($rule_all->getPermission() == 'allow') {
+        if($rule_all->getPermission() == 'allow'){
             $allow_hidden = 'allow';
-        } else {
+        }
+        else {
             $allow_hidden = Mage::getModel('admin/rules')->getCollection()
                 ->addFilter('role_id', $role->getId())
                 ->addFilter('resource_id', 'admin/webforms/hidden')
@@ -175,7 +175,7 @@ class VladimirPopov_WebForms_Model_Fields extends VladimirPopov_WebForms_Model_A
         if ($this->getType() == 'image')
             return array('jpg', 'jpeg', 'gif', 'png');
         if ($this->getType() == 'file') {
-            $allowed_extensions = explode("\n", trim($this->getValue('allowed_extensions')));
+            $allowed_extensions = explode("\n", trim($this->getValue()));
             $allowed_extensions = array_map('trim', $allowed_extensions);
             $allowed_extensions = array_map('strtolower', $allowed_extensions);
             $filtered_result = array();
@@ -342,8 +342,8 @@ class VladimirPopov_WebForms_Model_Fields extends VladimirPopov_WebForms_Model_A
                 }
 
                 $options[] = array(
-                    'value' => @$this->getFilter()->filter($value),
-                    'label' => trim(@$this->getFilter()->filter($label)),
+                    'value' => $this->getFilter()->filter($value),
+                    'label' => trim($this->getFilter()->filter($label)),
                     'null' => $this->isNullOption($val),
                     'checked' => $this->isCheckedOption($val),
                     'image_src' => $image_src,
@@ -418,7 +418,7 @@ class VladimirPopov_WebForms_Model_Fields extends VladimirPopov_WebForms_Model_A
 
         $field_id = "field" . $this->getId();
         $field_name = "field[" . $this->getId() . "]";
-        $field_value = @$filter->filter($this->getValue());
+        $field_value = $filter->filter($this->getValue());
         $result = $this->getData('result');
         $customer_value = $result ? $result->getData('field_' . $this->getId()) : false;
         $this->setData('customer_value', $customer_value);
@@ -435,14 +435,6 @@ class VladimirPopov_WebForms_Model_Fields extends VladimirPopov_WebForms_Model_A
             $field_class .= " validate-email";
         if ($field_type == "number")
             $field_class .= " validate-number";
-
-        if (!empty($field_value['number_min'])) {
-            $field_class .= ' validate-field-number-min-' . $this->getId();
-        }
-        if (!empty($field_value['number_max'])) {
-            $field_class .= ' validate-field-number-max-' . $this->getId();
-        }
-
         if ($field_type == "url")
             $field_class .= " validate-url";
         if ($this->getCssClass()) {
@@ -483,16 +475,16 @@ class VladimirPopov_WebForms_Model_Fields extends VladimirPopov_WebForms_Model_A
 
         switch ($field_type) {
             case 'text':
-                empty($field_value['text']) ? $config['field_value'] = '' : $config['field_value'] = $field_value['text'];
+            case 'email': {
+                $config['field_value'] = $field_value['text'];
                 break;
-            case 'email':
-                empty($field_value['text_email']) ? $config['field_value'] = '' : $config['field_value'] = $field_value['text_email'];
-                break;
-            case 'number':
-                empty($field_value['number_min']) ? $config['min'] = false : $config['min'] = $field_value['number_min'];
-                empty($field_value['number_max']) ? $config['max'] = false : $config['max'] = $field_value['number_max'];
+            }
+            case 'number': {
+                $config['min'] = $field_value['number_min'];
+                $config['max'] = $field_value['number_max'];
                 $config['template'] = 'webforms/fields/number.phtml';
                 break;
+            }
             case 'password':
                 $config['template'] = 'webforms/fields/password.phtml';
                 break;
@@ -593,7 +585,6 @@ class VladimirPopov_WebForms_Model_Fields extends VladimirPopov_WebForms_Model_A
 
             if (substr($regexp, 0, 1) == '/' && substr($regexp, strlen($regexp) - 1, strlen($regexp)) == '/')
                 $regexp = substr($regexp, 1, -1);
-            $regexp = str_replace('\\','\\\\',$regexp);
 
             $validate_message = trim(str_replace("'", "\'", $this->getData('validate_message')));
             $html .= "<script>Validation.add('validate-field-{$this->getId()}','{$validate_message}',function(v){var r = new RegExp('{$regexp}','{$flags}');return Validation.get('IsEmpty').test(v) || r.test(v);})</script>";
@@ -604,18 +595,6 @@ class VladimirPopov_WebForms_Model_Fields extends VladimirPopov_WebForms_Model_A
             $hint = trim(str_replace("'", "\'", $this->getHint()));
             $html .= "<script>Validation.add('validate-field-hint-{$this->getId()}','{$validate_message}',function(v){return v.trim() != '{$hint}';})</script>";
         }
-
-        if ($field_type == 'number') {
-            if (!empty($field_value['number_min'])) {
-                $validate_message = Mage::helper('webforms')->__('Minimum value is %s', $field_value['number_min']);
-                $html .= "<script>Validation.add('validate-field-number-min-{$this->getId()}','{$validate_message}',function(v){return v >= {$field_value['number_min']};})</script>";
-            }
-            if (!empty($field_value['number_max'])) {
-                $validate_message = Mage::helper('webforms')->__('Maximum value is %s', $field_value['number_max']);
-                $html .= "<script>Validation.add('validate-field-number-max-{$this->getId()}','{$validate_message}',function(v){return v <= {$field_value['number_max']};})</script>";
-            }
-        }
-
 
         // activate tinyMCE
         if ($tinyMCE && !Mage::registry('tinyMCE')) {
@@ -708,14 +687,6 @@ class VladimirPopov_WebForms_Model_Fields extends VladimirPopov_WebForms_Model_A
 
     public function prepareResultValue($value)
     {
-
-        switch ($this->getType()) {
-            case 'select/contact':
-                $contact = $this->getContactArray($value);
-                if (!empty($contact["name"])) $value = $contact["name"];
-                break;
-        }
-
         $valueObj = new Varien_Object(array('value' => $value));
 
         Mage::dispatchEvent('webforms_fields_prepare_result_value', array('field' => $this, 'value' => $valueObj));

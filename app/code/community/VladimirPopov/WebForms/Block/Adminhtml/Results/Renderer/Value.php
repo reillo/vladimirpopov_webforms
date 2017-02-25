@@ -74,7 +74,7 @@ class VladimirPopov_WebForms_Block_Adminhtml_Results_Renderer_Value extends Mage
                 $pos = 200;
             if (!$pos) $pos = 200;
             $html = '<div>' . nl2br(substr($value, 0, $pos)) . '</div>';
-            $html .= '<div id="' . $div_id . '" style="display:none">' . nl2br(substr($value, $pos, strlen($value))) . '<br></div>';
+            $html .= '<div id="' . $div_id . '" style="display:none">' . nl2br(substr($value, $pos, strlen($value))) . '<br/></div>';
             $html .= '<a onclick="' . $onclick . '" style="text-decoration:none;float:right">[' . $this->__('Expand') . ']</a>';
             return $html;
         }
