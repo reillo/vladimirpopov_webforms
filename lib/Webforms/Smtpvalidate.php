@@ -61,7 +61,7 @@ class SMTP_validateEmail
    * @param $email Array[optional] List of Emails to Validate
    * @param $sender String[optional] Email of validator
    */
-  public function SMTP_validateEmail($emails = false, $sender = false)
+  public function __construct($emails = false, $sender = false)
   {
     if ($emails) {
       $this->setEmails($emails);
